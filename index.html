@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Data Visualization DC3</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+	<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
+		 <link rel="stylesheet" href="css/style.css">  
+<style>
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+body {
+font-family: 'Montserrat', sans-serif;
+
+}
+@font-face {
+font-family: 'Montserrat', sans-serif;
+}
+
+.crumb_button2{
+	position: absolute;
+  	right: 30px;
+	top: 150px;
+}
+.crumb_button{
+	position: absolute;
+  	right: 60px;
+	top: 150px;
+}
+.crumbs {
+  width: 100%;
+  height: 50px;
+  font: 15px Montserrat, sans-serif;
+  align-self: flex-start;
+  background: lightgrey;
+}
+.crumbs .crumb {
+  position: relative;
+  display: inline-block;
+  padding: 1em;
+}
+.crumbs .crumb:not(:last-of-type):before {
+  content: '';
+  display: block;
+  position: absolute;
+  border-top: 5px solid transparent;
+  border-left: 10px solid #658ed0;
+  border-bottom: 5px solid transparent;
+  top: 21px;
+  right: -5px;
+}
+
+.container {
+ 
+  justify-content: center;
+  background: whitesmoke;
+}
+.container .chart {
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  background-color: whitesmoke;
+}
+
+/*********************
+ SVG Elements styling 
+*********************/
+svg text {
+  text-anchor: middle;
+}
+
+.ark {
+  fill-rule: evenodd;
+  cursor: pointer;
+}
+.ark.-depth-0 {
+  fill: white;
+}
+.split1 {
+height: 100%;
+width: 80%;
+position: fixed;
+z-index: 1;
+top: 0;
+overflow-x: hidden;
+padding-top: 20px;
+}
+.split2 {
+height: 100%;
+width: 20%;
+position: fixed;
+z-index: 1;
+top: 0;
+overflow-x: hidden;
+padding-top: 20px;
+}			
+/* Control the left side */
+.left {
+left: 0;
+background-color: whitesmoke;
+}
+			
+/* Control the right side */
+.right {
+right: 0;
+background-color: whitesmoke;
+}
+			
+/* If you want the content centered horizontally and vertically */
+.centered {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+}
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+</style>
+</head>
+
+
+<body>
+<div class="split1 left">
+	<h2>How many layers would you like to see?</h2>
+	<p id="selected-dropdown"></p>
+	<select id="d3-dropdown">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+	
+	</select>
+	<p id="selected-dropdown"></p>
+
+	<div class="crumbs">
+	  <!-- Crumbs dynamically appended -->
+	  <button class="crumb_button" type="button" style="float: right;">Save Route</button>
+	  <button class="crumb_button2" type="button" style="float: right;">&#8595;</button>
+	</div>
+	<div class="values">
+		<span># of products: </span>
+		<!-- Values dynamically appended -->
+	</div>
+	<br>
+	<div id="explanation" style="visibility: hidden;">
+		<span>Hovering Over: </span><span id="name"></span>
+		
+		      
+	</div>
+	
+	<div class="container">
+	<div class="chart2"></div>
+	<div class="chart">
+	
+	</div>
+	</div>
+</div>
+<div class="split2 right">
+	<h2>Filter Categories</h2>
+	<button type="button"><b>Apply</b></button><br><br>
+	<button type="button" style="background-color: #cb009b; border: 0px;" disabled><b># of products: > 2800</b></button><br>
+	<input type="checkbox" name="myCheckBox">
+  	<label for="myCheckBox">Books</label>
+  	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">Kindle Store</label><br>
+	<input type="checkbox" name="myCheckBox3" >
+  	<label for="myCheckBox3">Clothing, Shoes & Jewelry</label>
+	<br><br>
+
+	<button type="button" style="background-color: #0046c4; border: 0px;" disabled><b># of products: > 880</b></button><br>
+	<input type="checkbox" name="myCheckBox" >
+	  <label for="myCheckBox">Automotive</label>
+	  <input type="checkbox" name="myCheckBox4" >
+  	<label for="myCheckBox4">Sports & Outdoors</label>
+  	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">Industrial & Scientific</label><br>
+	<input type="checkbox" name="myCheckBox3" >
+	<label for="myCheckBox3">Tools & Home Improvement</label>
+	<br><br>
+
+	<button type="button" style="background-color: #787261; border: 0px;" disabled><b># of products: > 520</b></button><br>
+	<input type="checkbox" name="myCheckBox" >
+  	<label for="myCheckBox">Home & Kitchen</label>
+  	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">Health & Personal Care</label><br>
+	<input type="checkbox" name="myCheckBox3" >
+	<label for="myCheckBox3">Electronics</label>
+	<input type="checkbox" name="myCheckBox5" >
+	<label for="myCheckBox5">Patio, Lawn & Garden</label>
+	<input type="checkbox" name="myCheckBox6" >
+  	<label for="myCheckBox6">Musical Instruments</label>
+	
+	<br><br>
+	
+	<button type="button" style="background-color: #9884c1; border: 0px;" disabled><b># of products: > 430</b></button><br>
+	<input type="checkbox" name="myCheckBox4" >
+  	<label for="myCheckBox4">Office Products</label><br>
+	<input type="checkbox" name="myCheckBox" >
+  	<label for="myCheckBox">Magazine Subscriptions</label>
+	<input type="checkbox" name="myCheckBox3" >
+	<label for="myCheckBox3">Toys & Games</label>
+	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">CDs & Vinyl</label><br>
+	<input type="checkbox" name="myCheckBox22" >
+	<label for="myCheckBox22">Grocery & Gourmet Food</label><br>
+	
+
+	<br><br>
+
+	<button type="button" style="background-color: #7f9b83; border: 0px;" disabled><b># of products: > 210</b></button><br>
+	<input type="checkbox" name="myCheckBox5" >
+	<label for="myCheckBox5">Pet Supplies</label>
+	<input type="checkbox" name="myCheckBox4" >
+	<label for="myCheckBox4">Arts, Crafts & Sewing</label>
+	<input type="checkbox" name="myCheckBox" >
+  	<label for="myCheckBox">Video Games</label><br>
+  	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">Beauty</label><br>
+	
+	<br><br>
+
+	<button type="button" style="background-color: #ffcc8e; border: 0px;" disabled><b># of products: > 1</b></button><br>
+	<input type="checkbox" name="myCheckBox" >
+  	<label for="myCheckBox">Baby Products</label>
+  	<input type="checkbox" name="myCheckBox2" >
+	<label for="myCheckBox2">Software</label>
+	<input type="checkbox" name="myCheckBox3" >
+	<label for="myCheckBox3">Appliances</label><br>
+	<input type="checkbox" name="myCheckBox4" >
+	<label for="myCheckBox4">Digital Music</label>
+	<input type="checkbox" name="myCheckBox5" >
+	<label for="myCheckBox5">Kindle Store</label><br>
+	<input type="checkbox" name="myCheckBox6" >
+	<label for="myCheckBox6">Collectables & Fine Art</label>
+	<input type="checkbox" name="myCheckBox7" >
+	<label for="myCheckBox7">Classical</label><br>
+	<input type="checkbox" name="myCheckBox8" >
+	<label for="myCheckBox8">Cell Phones & Accessories</label>
+	<input type="checkbox" name="myCheckBox9" >
+	<label for="myCheckBox9">Computers</label>
+	<br><br>	
+
+	<button onclick="myFunction()">Show More Categories</button>
+
+	<div id="myDIV" hidden>
+	
+	<input type="checkbox" name="myCheckBox" >
+	<label for="myCheckBox">Gift Cards</label>
+	<input type="checkbox" name="myCheckBox2" >
+  	<label for="myCheckBox2">Office & School Supplies</label><br>
+  	<input type="checkbox" name="myCheckBox3" >
+  	<label for="myCheckBox3">MP3 Players & Accessories</label>
+  	<input type="checkbox" name="myCheckBox4" >
+  	<label for="myCheckBox4">All Electronics</label><br>
+  	<input type="checkbox" name="myCheckBox5" >
+  	<label for="myCheckBox5">Kitchen & Dining</label>
+  	<input type="checkbox" name="myCheckBox6" >
+  	<label for="myCheckBox6">Amazon Fashion</label><br>
+  	<input type="checkbox" name="myCheckBox7" >
+  	<label for="myCheckBox7">Camera & Photo</label>
+  	<input type="checkbox" name="myCheckBox8" >
+  	<label for="myCheckBox8">GPS & Navigation</label><br>
+  	<input type="checkbox" name="myCheckBox9" >
+  	<label for="myCheckBox9">Luxury Beauty</label>
+	
+	</div>
+	
+	<script>
+	function myFunction() {
+	  var x = document.getElementById("myDIV");
+	  if (x.style.display === "block") {
+		x.style.display = "none";
+	  } else {
+		x.style.display = "block";
+	  }
+	}
+	</script>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/22878/d3.min.js'></script>
+	<script  src="partition2.js"></script>
+</body>
+
+
+</html>
